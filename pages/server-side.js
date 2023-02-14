@@ -1,14 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
 import getAllProjects from '../queries/getAllProjects'
 
-export default function Home() {
+export default function Home({data}) {
   
   const projectQuery = useQuery({
     queryKey: ['allProjects'],
     queryFn: getAllProjects,
+    initialData: data,
   })
 
-  // console.log(projectQuery.data)
+  // console.log(`data: ${JSON.stringify(data)}`)
 
   if (projectQuery.isLoading) return <p>Loading...</p>
   if (projectQuery.isError) return <p>Error</p>
@@ -24,12 +25,12 @@ export default function Home() {
   )
 }
 
-// export async function getServerSideProps(context) {
-//   const data = await getAllProjects();
-//   return {
-//     props: {
-//       data,
-//     }
-//   }
-// }
+export async function getServerSideProps() {
+  const data = await getAllProjects();
+  return {
+    props: {
+      data,
+    }
+  }
+}
 
